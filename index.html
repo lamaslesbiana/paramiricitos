@@ -175,7 +175,7 @@
 </head>
 <body>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" preload="auto">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
 
@@ -225,21 +225,31 @@
 </div>
 
 <script>
-  function mostrarSurprise() {
+ function mostrarSurprise() {
     document.getElementById("btn-box").style.display = "none";
     document.getElementById("surprise-area").style.display = "block";
     
-    // Iniciar música al hacer clic
     const audio = document.getElementById("bgMusic");
-    // Mensaje de consola detallado en español por si falla
-    audio.play().catch(e => console.log("⚠️ Error con la música: Asegúrate de tener un archivo 'cancion.mp3' en la misma carpeta que tu 'index.html'."));
+    
+    // Forzamos el volumen y la reproducción
+    audio.volume = 0.5; 
+    
+    // Esto intenta reproducir y si falla nos avisa exactamente por qué
+    audio.play().then(() => {
+        console.log("Reproduciendo con éxito");
+    }).catch(error => {
+        console.error("Error al reproducir:", error);
+        // Plan B: Si falla por seguridad del navegador, reintentar con un evento
+        document.body.addEventListener('click', () => {
+            audio.play();
+        }, { once: true });
+    });
 
-    // Lluvia de pétalos extra al abrir
     for(let i=0; i<30; i++) {
         setTimeout(() => crearItemCayendo('petal'), i * 100);
-        setTimeout(() => crearItemCayendo('heart'), i * 120); // Corazones
+        setTimeout(() => crearItemCayendo('heart'), i * 120);
     }
-  }
+}
 
   function crearItemCayendo(tipo) {
     const p = document.createElement("div");
@@ -267,6 +277,7 @@
 
 </body>
 </html>
+
 
 
 
