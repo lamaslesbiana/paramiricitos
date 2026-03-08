@@ -1,0 +1,269 @@
+<!surp html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Para mi Ricitos 🌸</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Quicksand', sans-serif;
+    /* FONDO DE MY MELODY (Patrón de fondo principal) */
+    background: url('https://share.google/5DdyLsKQv1yWvmotr') repeat;
+    background-size: 300px; /* Ajusta el tamaño del patrón */
+    overflow-x: hidden;
+    position: relative;
+    background-color: #ffe6f0;
+  }
+
+  /* Capa de brillo sobre el fondo principal */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 230, 240, 0.4);
+    z-index: 0;
+  }
+
+  .card {
+    /* FONDO DE LA CARTA (EL RECUADRO) */
+    /* Importante: He añadido una capa blanca semitransparente (rgba 255, 255, 255, 0.8) 
+       sobre la imagen para que el texto sea legible. */
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+      url('https://wallpapers.com/images/high/my-melody-pastel-collage-r75ii77qq8fijaq8.webp'); /* REEMPLAZAR POR EL LINK DIRECTO */
+    background-size: cover;
+    background-position: center;
+    
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 4px solid #ffb3d1;
+    padding: 35px;
+    border-radius: 40px;
+    box-shadow: 0 20px 50px rgba(255, 105, 180, 0.3);
+    text-align: center;
+    max-width: 550px;
+    width: 85%;
+    z-index: 10;
+    position: relative;
+    margin: 20px;
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    color: #ff1a75;
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.3);
+  }
+
+  .poem-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-bottom: 20px;
+  }
+
+  /* Personalizar barra de scroll a juego */
+  .poem-container::-webkit-scrollbar { width: 6px; }
+  .poem-container::-webkit-scrollbar-thumb { background: #ff99c2; border-radius: 10px; }
+  .poem-container::-webkit-scrollbar-track { background: rgba(255, 182, 193, 0.2); }
+
+  .poem {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #444;
+    font-weight: 600;
+    white-space: pre-line;
+    text-align: center;
+  }
+
+  .highlight {
+    color: #ff0066;
+    font-weight: 700;
+    background: rgba(255, 182, 193, 0.3);
+    padding: 0 5px;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff80b3, #ff1a75);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(255, 26, 117, 0.3);
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 20px rgba(255, 26, 117, 0.5);
+  }
+
+  .surprise {
+    display: none;
+    margin-top: 25px;
+    animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .surprise img {
+    width: 100%;
+    max-width: 350px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+    border-radius: 20px;
+  }
+
+  /* Stickers de Pompompurin en dos esquinas */
+  .pompom {
+    position: absolute;
+    width: 110px;
+    z-index: 15;
+    pointer-events: none;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+  }
+
+  /* Sticker superior derecho */
+  .pompom-top { top: -60px; right: -30px; transform: rotate(15deg); }
+  /* Sticker inferior izquierdo */
+  .pompom-bottom { bottom: -50px; left: -40px; transform: rotate(-10deg); }
+
+  /* Lluvia de "cositas rosadas" (Pétalos y Corazones) */
+  .petal {
+    position: absolute;
+    background-color: #ff99c2;
+    border-radius: 150% 0 150% 0; /* Forma de pétalo */
+    opacity: 0.8;
+    pointer-events: none;
+    animation: fall linear infinite;
+    z-index: 1;
+  }
+
+  /* Definir variaciones para corazones */
+  .heart {
+    background-color: #ff4d88;
+    border-radius: 0; /* Forma básica */
+    clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+    /* clip-path usa coordenadas del icono de un corazón */
+    transform: scale(0);
+    width: 20px;
+    height: 20px;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+  }
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="Taylor Swift - Honey.flac" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <img class="pompom pompom-top" src="https://stickershop.line-scdn.net/stickershop/v1/product/7067/LINEStorePC/main.png?v=1" alt="Pompompurin">
+  <img class="pompom pompom-bottom" src="https://stickershop.line-scdn.net/stickershop/v1/product/7067/LINEStorePC/main.png?v=1" alt="Pompompurin">
+
+  <h1>Para mi Ricitos 🌸</h1>
+
+  <div class="poem-container">
+    <div class="poem" id="typewriter">
+      Eres la mujer que más amo y admiro.
+
+      Mi mujer linda, fuerte y hermosa.
+      A veces dices que no te ves así,
+      pero yo te miro con ojos llenos de <span class="highlight">amor</span>
+      y solo puedo ver lo extraordinaria que eres.
+
+      Inteligente, amable, profunda…
+      una preciosa mujer que me llena de orgullo.
+
+      Todos los días me enamoro un poco más de ti,
+      de tu forma de pensar, de sentir, de existir en mi vida.
+
+      Y cuando mi mente corre demasiado rápido
+      y el mundo se vuelve un poco más ruidoso,
+      tú eres mi <span class="highlight">melodía de calma</span>.
+      Mi lugar seguro.
+      Mi lugar perfecto.
+
+      Te amo infinitamente, mi ricitos.
+
+      Y cuando por fin nos volvamos a ver,
+      voy a llenarte de abrazos
+      y besos infinitos que digan todo lo que a veces no alcanzo a expresar en palabras.
+    </div>
+  </div>
+
+  <div id="btn-box">
+    <button onclick="mostrarSurprise()">Abre la sorpresa 🌸</button>
+  </div>
+
+  <div class="surprise" id="surprise-area">
+    <img src="https://us.123rf.com/450wm/naddya/naddya1310/naddya131000010/22773283-roses-bouquet-vector-illustration.jpg" alt="Ramo de Rosas Pasteles">
+    <div style="font-family:'Dancing Script'; font-size: 2.5rem; color: #ff1a75; margin-top: 15px; text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.3);">¡Dame teta mi amor!</div>
+  </div>
+</div>
+
+<script>
+  function mostrarSurprise() {
+    document.getElementById("btn-box").style.display = "none";
+    document.getElementById("surprise-area").style.display = "block";
+    
+    // Iniciar música al hacer clic
+    const audio = document.getElementById("bgMusic");
+    // Mensaje de consola detallado en español por si falla
+    audio.play().catch(e => console.log("⚠️ Error con la música: Asegúrate de tener un archivo 'cancion.mp3' en la misma carpeta que tu 'index.html'."));
+
+    // Lluvia de pétalos extra al abrir
+    for(let i=0; i<30; i++) {
+        setTimeout(() => crearItemCayendo('petal'), i * 100);
+        setTimeout(() => crearItemCayendo('heart'), i * 120); // Corazones
+    }
+  }
+
+  function crearItemCayendo(tipo) {
+    const p = document.createElement("div");
+    p.className = (tipo === 'petal') ? "petal" : "petal heart";
+    p.style.left = Math.random() * 100 + "vw";
+    
+    // Variar tamaños
+    const baseSize = (tipo === 'petal') ? (Math.random() * 15 + 10) : 15;
+    p.style.width = baseSize + "px";
+    p.style.height = (tipo === 'petal') ? baseSize + "px" : baseSize + "px";
+    
+    // Variar duración
+    p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    p.style.opacity = Math.random();
+    document.body.appendChild(p);
+    
+    // Eliminar pétalo para no saturar
+    setTimeout(() => { p.remove(); }, 7000);
+  }
+
+  // Lluvia constante desde el inicio
+  setInterval(() => crearItemCayendo('petal'), 400); // Pétalos constantes
+  setInterval(() => crearItemCayendo('heart'), 1500); // Corazones menos frecuentes
+</script>
+
+</body>
+</html>
